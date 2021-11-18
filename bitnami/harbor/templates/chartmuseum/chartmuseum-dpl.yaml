@@ -149,6 +149,18 @@ spec:
             - name: INTERNAL_TLS_TRUST_CA_PATH
               value: /etc/harbor/ssl/chartmuseum/ca.crt
             {{- end }}
+            {{- if (include "harbor.redis.passwordFromSecret" .) }}
+            - name: CACHE_REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  {{- if (.Values.redis.enabled .Values.redis.auth.enabled) }}
+                  name: {{ .Values.redis.auth.passwordSecret.name  }}
+                  key: {{ .Values.redis.auth.passwordSecret.key  }}
+                  {{- else if (not .Values.redis.enabled) }}
+                  name: {{ .Values.externalRedis.passwordSecret.name  }}
+                  key: {{ .Values.externalRedis.passwordSecret.key  }}
+                  {{- end }}
+            {{- end }}
             {{- if .Values.chartmuseum.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.chartmuseum.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}

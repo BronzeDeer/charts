@@ -527,6 +527,16 @@ Return whether Redis&trade; uses password authentication or not
 {{- end -}}
 {{- end -}}
 
+{{/*
+Return true iff a passwordSecret is set for the type of Redis&trade; (internal/external) configured
+ */}}
+{{- define "harbor.redis.passwordFromSecret"-}}
+{{-
+  or (and (not .Values.redis.enabled) .Values.externalRedis.passwordSecret.name)
+    (and .Values.redis.enabled .Values.redis.auth.passwordSecret.name .Values.redis.auth.enabled)
+-}}
+{{- end -}}
+
 {{- define "harbor.redis.rawPassword" -}}
   {{- if and (not .Values.redis.enabled) .Values.externalRedis.password -}}
     {{- .Values.externalRedis.password -}}

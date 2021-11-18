@@ -3047,6 +3047,10 @@ redis:
     ## @param redis.auth.enabled Use redis password
     ##
     enabled: false
+    ## @param redis.auth.passwordSecret If .name is set, will read the key from existing secret from key .key in secret of name .name instead
+    passwordSecret:
+      name: ""
+      key: password
     ## @param redis.auth.password Redis password
     ## Defaults to a random 10-character alphanumeric string if not set and auth.enabled is true.
     ## It should always be set using the password value or in the existingSecret to avoid issues
@@ -3097,6 +3101,10 @@ externalRedis:
     ## <host_sentinal1>:<port_sentinel1>,<host_sentinal2>:<port_sentinel2>,<host_sentinal2>:<port_sentinel3>
     ##
     hosts: ""
+  ## @param externalRedis.passwordSecret If .name is set, will read the key from existing secret from key .key in secret of name .name instead
+  passwordSecret:
+    name: ""
+    key: password
   ## @param externalRedis.password Password for the external redis
   ##
   password: ""
